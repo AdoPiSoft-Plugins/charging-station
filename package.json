@@ -1,0 +1,9 @@
+{
+  "name": "charging-station",
+  "version": "1.0.0",
+  "description": "Charging station plugin for AdoPiSoft",
+  "main": "index.js",
+  "repository": "git@bitbucket.org:adopisowifi/charging-station-plugin.git",
+  "author": "Arnel Lenteria <arnel.lenteria@gmail.com>",
+  "license": "MIT"
+}
