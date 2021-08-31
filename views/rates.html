@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <button
+      type="button"
+      class="btn btn-success"
+      ng-click="newRate()"
+    >
+      <i class="fa fa-plus"></i>
+      Add Rate
+    </button>
+  </div>
+</div>
+
+<table class="table table-hover table-striped">
+  <thead>
+    <th>Amount</th>
+    <th>Time (Minutes)</th>
+    <th>Expiration (Minutes)</th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr ng-show="!ports.length">
+      <td colspan="4">- No entry -</td>
+    </tr>
+    <tr ng-repeat="rate in rates" class="editable-row">
+      <td>
+        <span editable-number="rate.amount" e-name="amount" e-form="rowform" e-required e-class="form-control">{{rate.amount}}</span>
+      </td>
+      <td>
+        <span editable-number="rate.time_minutes" e-name="time_minutes" e-form="rowform" e-required e-class="form-control">{{rate.time_minutes}} minute/s</span>
+      </td>
+      <td>
+        <span editable-number="rate.exp_minutes" e-name="exp_minutes" e-form="rowform" e-required e-class="form-control">Time + {{rate.exp_minutes}} minute/s</span>
+      </td>
+      <td>
+        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="saveRate(rate.id, $data, rowform)" oncancel="cancelRateForm(rate.id, rate)" shown="new_rate == rate">
+          <button id="save-rate-{{rate.id}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+            Save
+          </button>
+          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+            Cancel
+          </button>
+        </form>
+        <div class="buttons" ng-show="!rowform.$visible">
+          <button id="edit-rate-{{rate.id}}" class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+          <button id="delete-rate-{{rate.id}}" class="btn btn-danger editable-table-button btn-xs" ng-click="deleteRate(rate.id)">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

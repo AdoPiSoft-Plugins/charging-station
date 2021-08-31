@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "jquery": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "globals": {
+    "define": true,
+    "ko": true
+  },
+  "rules": {
+    "camelcase": "off",
+    "prefer-const": "off",
+    "no-var": "off",
+    "one-var": "off",
+    "spaced-comment": "off",
+    "prefer-promise-reject-errors": "off",
+    "no-prototype-builtins": "off",
+    "semi": 0
+  }
+}

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-12">
+    <button
+      type="button"
+      class="btn btn-success"
+      ng-click="newPort()"
+    >
+      <i class="fa fa-plus"></i>
+      Add Port
+    </button>
+  </div>
+</div>
+
+<table class="table table-hover table-striped">
+  <thead>
+    <th>GPIO Pin</th>
+    <th>Alias</th>
+    <th></th>
+  </thead>
+
+  <tbody>
+    <tr ng-show="!ports.length">
+      <td colspan="3">- No entry -</td>
+    </tr>
+    <tr ng-repeat="port in ports" class="editable-row" >
+      <td>
+        <span editable-number="port.pin" e-name="pin" e-form="rowform" e-required e-class="form-control">{{port.pin}}</span>
+      </td>
+      <td>
+        <span editable-text="port.alias" e-name="alias" e-form="rowform" e-required e-class="form-control">{{port.alias}}</span>
+      </td>
+      <td>
+        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" onbeforesave="savePort(port.id, $data, rowform)" oncancel="cancelPortForm(port.id, port)" shown="new_port == port">
+          <button id="save-port-{{port.id}}" type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+            Save
+          </button>
+          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+            Cancel
+          </button>
+        </form>
+        <div class="buttons" ng-show="!rowform.$visible">
+          <button id="edit-port-{{port.id}}" class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+          <button id="delete-port-{{port.id}}" class="btn btn-danger editable-table-button btn-xs" ng-click="deletePort(port.id)">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

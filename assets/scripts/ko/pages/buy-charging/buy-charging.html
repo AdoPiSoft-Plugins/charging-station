@@ -1,0 +1,113 @@
+<style type="text/css">
+  @font-face {
+    font-family: 'Pocket Calculator Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Pocket Calculator Regular'), url('/public/plugins/charging-station/assets/fonts/POCKC___.woff') format('woff');
+  }
+  .calc-font{
+    font-family:'Pocket Calculator Regular';
+    font-weight:normal;
+  }  
+</style>
+<br>
+<br>
+<div class="container">
+  <div class="text-center">
+    <div class="row">
+      <h2 class="text-primary">Charging Station</h2>
+      <!-- ko foreach: { data: ports } -->
+      <div class="text-center">
+        <hr>
+        <h3 data-bind="text: alias" class="text-success"></h3>
+        <!-- ko if: running -->
+        <img src="/public/plugins/charging-station/assets/images/charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
+        <!-- /ko -->
+
+        <!-- ko if: !running() -->
+        <img src="/public/plugins/charging-station/assets/images/not-charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
+        <!-- /ko -->
+
+        <h2 data-bind="html: formatted_time()"></h2>
+        <small>TIME</small>
+
+        <br><br>
+        <!-- ko if: !$parent.selected_session() -->
+        <a class="btn btn-sm btn-default" data-bind="disable: running() && !can_pause(), click: function(d, e){ $parent.addTime(id) }">
+          <i class="glyphicon glyphicon-plus-sign "></i>
+          Add Time
+        </a>
+        <!-- /ko -->
+        <!-- ko if: $parent.selected_session() -->
+        <a class="btn btn-sm btn-success" data-bind="disable: running(), click: function(d, e){ $parent.startPort(id) }">
+          Select
+        </a>
+        <!-- /ko -->
+
+        <button class="btn btn-sm btn-warning" data-bind="disable: !can_pause() || !running(), click: pauseSession">
+          Pause Time
+        </button>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <!-- ko if: sessions().length -->
+    <hr>
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="text-success">
+          Available Sessions:
+        </h3>
+        <table class="table">
+          <thead>
+            <th class="text-center">Time</th>
+            <th class="text-center">Expiration</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <!-- ko foreach: { data: sessions } -->
+            <tr>
+              <td class="text-center">
+                <span data-bind="html: formatted_time()"></span>
+              </td>
+              <td class="text-center">
+                <span data-bind="text: formatted_expiry_date"></span>
+              </td>
+              <td>
+                <!-- ko if: !running() && ($parent.selected_session() || {}).id != id -->
+                <a class="btn btn-sm btn-success" data-bind="click: function(d, e){ $parent.selectSession(id) }">
+                  <i class="glyphicon glyphicon-play"></i>
+                  Start
+                </a>
+                <!-- /ko -->
+
+                <!-- ko if: $parent.selected_session() && $parent.selected_session().id == id -->
+                <a class="btn btn-sm btn-default" data-bind="click: function(d, e){ $parent.cancelStartSession(id) }">
+                  Cancel
+                </a>
+                <!-- /ko -->
+
+                <!-- ko if: running -->
+                <a class="btn btn-sm btn-warning" data-bind="click: pauseSession">
+                  <i class="glyphicon glyphicon-pause"></i>
+                  Pause
+                </a>
+                <!-- /ko -->
+              </td>
+            </tr>
+            <!-- /ko -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <hr>
+    <div class="btn-group-padded">
+      <a class="btn btn-lg btn-default" data-bind="navigate: 'home-page'">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Back
+      </a>
+    </div>
+  </div>
+</div>

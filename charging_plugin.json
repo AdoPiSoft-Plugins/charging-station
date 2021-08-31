@@ -1,3 +1,14 @@
 {
-  
+  "ports": [
+    {"id": 1, "pin": 12, "alias": "Charging Port 1"},
+    {"id": 2, "pin": 13, "alias": "Charging Port 2"}
+  ],
+  "rates": [
+    {"id": 1, "amount": 1, "time_minutes": 5, "exp_minutes": 5},
+    {"id": 2, "amount": 5, "time_minutes": 10, "exp_minutes": 10},
+    {"id": 3, "amount": 10, "time_minutes": 30, "exp_minutes": 30}
+  ],
+  "captive_portal": {
+    "use_default_button": true
+  }
 }
