@@ -33,18 +33,18 @@
 
         <br><br>
         <!-- ko if: !$parent.selected_session() -->
-        <a class="btn btn-sm btn-default" data-bind="disable: running() && !can_pause(), click: function(d, e){ $parent.addTime(id) }">
+        <button class="btn btn-sm btn-default" data-bind="disable: (!is_owned() && running()), click: function(d, e){ $parent.addTime(id) }">
           <i class="glyphicon glyphicon-plus-sign "></i>
           Add Time
-        </a>
+        </button>
         <!-- /ko -->
         <!-- ko if: $parent.selected_session() -->
-        <a class="btn btn-sm btn-success" data-bind="disable: running(), click: function(d, e){ $parent.startPort(id) }">
+        <button class="btn btn-sm btn-success" data-bind="disable: (!is_owned() && running()), click: function(d, e){ $parent.startPort(id) }">
           Select
-        </a>
+        </button>
         <!-- /ko -->
 
-        <button class="btn btn-sm btn-warning" data-bind="disable: !can_pause() || !running(), click: pauseSession">
+        <button class="btn btn-sm btn-warning" data-bind="disable: !is_owned() || !running(), click: pauseSession">
           Pause Time
         </button>
       </div>

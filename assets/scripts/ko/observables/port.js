@@ -15,7 +15,7 @@ function (ko, Session, toast, http, socket, formatDate, formatTime, find) {
     self.pin = ko.observable(data.pin);
     self.alias = ko.observable(data.alias);
     self.running = ko.observable(false)
-    self.can_pause = ko.observable(false)
+    self.is_owned = ko.observable(false)
     self.formatted_time = ko.observable('-')
 
     var sessions = []
@@ -27,10 +27,9 @@ function (ko, Session, toast, http, socket, formatDate, formatTime, find) {
       self.running(!!running_session)
 
       if (running_session) {
-        self.can_pause(running_session.is_owned)
+        self.is_owned(!!running_session.is_owned)
         sessions = data
       }
-
       if (sessions.length) {
         var formatted_time = ''
         var time = 0
@@ -65,7 +64,8 @@ function (ko, Session, toast, http, socket, formatDate, formatTime, find) {
 
         toast.error('Charging OFF');
       })
-      self.can_pause(false)
+      self.is_owned(false)
+      self.running(false)
       self.formatted_time("<span class='calc-font'>00:00:00</span>")
       if (self.interval) clearInterval(self.interval)
     }

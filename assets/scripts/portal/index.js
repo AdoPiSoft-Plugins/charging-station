@@ -39,8 +39,8 @@
     var con = document.querySelector('.btn-group-padded')
     if (!con) return
     con.insertBefore(btn, con.children[1])
-    // var viewModel = ko.contextFor(refBtn.parentNode)
-    // ko.applyBindings(viewModel, btn)
+    var viewModel = ko.contextFor(con.parentNode)
+    ko.applyBindings(viewModel, btn)
   }
 
   http.get('/charging-plugin/portal-settings', function (x, resp) {
