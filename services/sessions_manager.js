@@ -71,7 +71,12 @@ exports.startSession = async (session_id) => {
   }
 
   let exist = exports.list.find(s => s.status === 'running' && s.charging_port_id === charging_port_id)
-  if (exist) return Promise.reject('Charging port has existing running session')
+  if (exist) {
+    if (session.mobile_device_id !== exist.mobile_device_id) {
+      await session.clearPort()
+    }
+    return Promise.reject('Charging port has existing running session')
+  }
 
   let { ports } = await Config.read()
   let charging_port = ports.find(p => String(p.id) === String(charging_port_id))

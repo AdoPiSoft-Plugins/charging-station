@@ -97,20 +97,6 @@ class Session extends EventEmitter {
     this.startTimeTick()
   }
 
-  async refresh () {
-    try {
-      this.timer.clearInterval()
-      this.status = 'available'
-      await this.prestart()
-      this.startTick()
-      this.status = 'running'
-    } catch (e) {
-      this.status = 'running' // stop() throws error is session is not running
-      await this.stop()
-      throw e
-    }
-  }
-
   startTimeTick () {
     this.timer = new NanoTimer()
     this.timer.setInterval(() => {
@@ -181,25 +167,33 @@ class Session extends EventEmitter {
     return this
   }
 
-  async turnOffGPIO () {
-    let port = this.charging_port
-    try {
-      console.log(`Toggle GPIO PIN: ${port.pin} 0`)
-      await cmd(`${path.join(__dirname, '..', 'scripts', 'toggle-gpio.py')} ${port.pin} 0`)
-    } catch (e) {
-      console.log(e)
-    }
+  async clearPort () {
     this.db_instance.charging_port_id = null
     this.charging_port_id = null
     this.charging_port = null
     await this.save()
   }
 
+  async turnOffGPIO () {
+    let port = this.charging_port
+    await this.clearPort()
+    try {
+      if (process.env.NODE_ENV !== 'production') {
+        return console.log(`python /etc/toggle-gpio.py ${port.pin} 0`)
+      }
+      await cmd(`python /etc/toggle-gpio.py ${port.pin} 0`)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   async turnOnGPIO () {
     let port = this.charging_port
     try {
-      console.log(`Toggle GPIO PIN: ${port.pin} 1`)
-      await cmd(`${path.join(__dirname, '..', 'scripts', 'toggle-gpio.py')} ${port.pin} 1`)
+      if (process.env.NODE_ENV !== 'production') {
+        return console.log(`python /etc/toggle-gpio.py ${port.pin} 1`)
+      }
+      await cmd(`python /etc/toggle-gpio.py ${port.pin} 1`)
     } catch (e) {
       console.log(e)
     }
