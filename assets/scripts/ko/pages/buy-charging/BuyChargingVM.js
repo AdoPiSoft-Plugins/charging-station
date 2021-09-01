@@ -5,8 +5,9 @@ define([
   'http',
   src + '/services/ports.js',
   src + '/services/sessions.js',
-  'app/observables/payment'
-], function (ko, rootVM, http, ports, sessions, payment) {
+  'app/observables/payment',
+  'toast'
+], function (ko, rootVM, http, ports, sessions, payment, toast) {
   return function () {
     var self = this
     self.loading = ko.observable(false)
@@ -42,6 +43,8 @@ define([
         ports.stopSync();
         ports.fetch();
         sessions.fetch();
+
+        toast.success('Charging ON');
       });
     }
 

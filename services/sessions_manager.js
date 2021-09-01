@@ -47,11 +47,14 @@ exports.sessionsByPort = async (port_id) => {
 
 exports.startSession = async (session_id) => {
   let session = await exports.findSession(session_id)
+  let { charging_port_id } = session
+  session.on('error', async (e) => {
+    console.log(e)
+  })
   session.on('stop', async () => {
     try {
-      let [s] = await exports.sessionsByPort(session.charging_port_id)
-
-      if (s) {
+      let [s] = await exports.sessionsByPort(charging_port_id)
+      if (s && s.mobile_device_id === session.mobile_device_id) {
         await exports.startSession(s.id) // auto-continue
       }
     } catch (e) { console.log(e) }
@@ -60,13 +63,18 @@ exports.startSession = async (session_id) => {
       await exports.stopSession(session_id)
     } catch (e) { console.log(e) }
   })
-  exports.list.push(session)
 
-  let exist = exports.list.find(s => s.status === 'running' && s.charging_port_id === session.charging_port_id)
+  try {
+    await exports.isSessionLoaded(session_id)
+  } catch (e) {
+    exports.list.push(session)
+  }
+
+  let exist = exports.list.find(s => s.status === 'running' && s.charging_port_id === charging_port_id)
   if (exist) return Promise.reject('Charging port has existing running session')
 
   let { ports } = await Config.read()
-  let charging_port = ports.find(p => String(p.id) === String(session.charging_port_id))
+  let charging_port = ports.find(p => String(p.id) === String(charging_port_id))
   if (!charging_port) {
     return Promise.reject('Charging port not set')
   }

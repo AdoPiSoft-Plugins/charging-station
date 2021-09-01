@@ -23,7 +23,6 @@ exports.que = async (opts) => {
     const i = payments_manager.que_list.findIndex(x => String(x.coinslot_id) === String(coinslot_id))
     payments_manager.que_list.splice(i, 1)
     coinslots_manager.closeCoinslot(coinslot_id)
-    console.log('Payment Done: (Fox was here)', p)
     if (p.session) {
       sessions_manager.startSession(p.session.id).catch(e => console.log(e))
     }

@@ -38,7 +38,11 @@ exports.start = async (req, res, next) => {
     if (device.db_instance.id !== owner_id) {
       next("You don't own this session")
     }
-    await s.start(port_id)
+    s.charging_port_id = port_id
+    let db_instance = s.db_instance
+    db_instance.charging_port_id = port_id
+    await db_instance.save()
+    await sessions_manager.startSession(s.id).catch(e => console.log(e))
     res.json(s.toJSON())
   } catch (e) {
     next(e)

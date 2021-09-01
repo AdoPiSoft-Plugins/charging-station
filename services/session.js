@@ -70,6 +70,7 @@ class Session extends EventEmitter {
     this.turnOnGPIO()
     this.status = 'running'
     this.emit('start', this)
+    this.save()
     return this
   }
 
@@ -161,6 +162,7 @@ class Session extends EventEmitter {
     await this.save()
     this.status = this.isExpired() ? 'expired' : 'stopped'
     this.emit('stop', this)
+    console.log('Session stopped')
     return this
   }
 
@@ -223,15 +225,14 @@ class Session extends EventEmitter {
   }
 
   toJSON () {
-    var {
+    let {
       id, mobile_device_id,
-      charging_port_id,
       time_seconds,
       running_time_seconds,
       expire_minutes,
       expiration_date, created_at, updated_at
     } = this.db_instance
-
+    let { charging_port_id } = this
     let { status } = this
     if (this.isExpired()) {
       status = 'expired'

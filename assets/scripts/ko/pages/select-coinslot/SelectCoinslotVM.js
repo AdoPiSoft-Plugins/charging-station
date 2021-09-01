@@ -10,7 +10,7 @@ define([
   'modal',
   'timerConfig',
   'app/utils/array.includes',
-  src + '/components/wallet-prompt/WalletPrompt'
+  src + '/components/wallet-prompt/WalletPrompt.js'
 ], function (ko, rootVM, toast, http, payment, device, customer, modal, timerConfig, includes) {
   return function () {
     var self = this;
@@ -29,7 +29,7 @@ define([
         self.loading(false);
 
         if (customer.credits() > 0) {
-          modal.show('charging-wallet-prompt', { customer: customer, rate_type: 'charging', is_voucher: false });
+          modal.show('charging-wallet-prompt', { customer: customer, charging_port_id: payment.intent() });
         } else if (coinslots.length === 1) {
           self.selectCoinslot(coinslots[0].id);
         }

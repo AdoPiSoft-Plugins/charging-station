@@ -5,7 +5,7 @@ const rates_settings_ctrl = require('./controllers/rates_settings_ctrl.js')
 const portal_settings_ctrl = require('./controllers/portal_settings_ctrl.js')
 const payments_ctrl = require('./controllers/payments_ctrl.js')
 const sessions_ctrl = require('./controllers/sessions_ctrl.js')
-const { auth, express, bodyParser, ipv4, device_reg } = middlewares
+const { auth, express, bodyParser, ipv4, device_reg, current_customer } = middlewares
 
 router.get('/charging-plugin/ports', ports_settings_ctrl.get)
 router.get('/charging-plugin/port/:id/sessions', ipv4, device_reg, sessions_ctrl.sessionsByPort)
@@ -57,6 +57,7 @@ router.post('/charging-plugin/portal-settings',
 )
 
 router.post('/charging-plugin/payments/que', ipv4, device_reg, payments_ctrl.quePayment)
+router.post('/charging-plugin/wallet-payment', ipv4, device_reg, current_customer, payments_ctrl.walletPayment)
 
 router.get('/charging-plugin/sessions', ipv4, device_reg, sessions_ctrl.get)
 router.post('/charging-plugin/session/:id/start', ipv4, device_reg, sessions_ctrl.start)

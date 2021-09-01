@@ -4,10 +4,11 @@ define([
   'toast',
   'http',
   'socket',
-  'app/utils/parseCredits',
-  'app/utils/formatDate'
+  'app/utils/formatDate',
+  '/public/plugins/charging-station/assets/scripts/ko/utils/format-time.js',
+  'app/utils/array.find'
 ],
-function (ko, Session, toast, http, socket, parseCredits, formatDate) {
+function (ko, Session, toast, http, socket, formatDate, formatTime, find) {
   return function Port (data) {
     var self = this;
     self.id = ko.observable(data.id);
@@ -17,28 +18,25 @@ function (ko, Session, toast, http, socket, parseCredits, formatDate) {
     self.can_pause = ko.observable(false)
     self.formatted_time = ko.observable('-')
 
-    function paddStart (i) {
-      i = i + ''
-      if (i.length >= 2) {
-        return i
-      } else {
-        return '0' + i
-      }
-    }
     var sessions = []
     http.get('/charging-plugin/port/' + data.id + '/sessions', function (err, data) {
       if (err) return http.catchError(err);
-      sessions = data
+      var running_session = find(data, function (s) {
+        return s.status === 'running'
+      })
+      self.running(!!running_session)
+
+      if (running_session) {
+        self.can_pause(running_session.is_owned)
+        sessions = data
+      }
+
       if (sessions.length) {
-        self.running(true)
         var formatted_time = ''
         var time = 0
         for (var i = 0; i < sessions.length; i++) {
           var s = sessions[i]
           let remaining_time_seconds = s.time_seconds - s.running_time_seconds
-          if (s.is_owned && s.status === 'running') {
-            self.can_pause(true)
-          }
           time = time + remaining_time_seconds
         }
 
@@ -46,17 +44,8 @@ function (ko, Session, toast, http, socket, parseCredits, formatDate) {
           time--
           var t = time
           if (t > 0) {
-            var hh = 0, mm = 0, ss = 0;
-            if (t > 3600) {
-              hh = parseInt(t / 3600)
-              t = t - (hh * 3600)
-            }
-            if (t > 60) {
-              mm = parseInt(t / 60)
-              t = t - (mm * 60)
-            }
-            ss = t
-            formatted_time = "<span class='calc-font'>" + paddStart(hh) + ':' + paddStart(mm) + ':' + paddStart(ss) + '</span>'
+            var ft = formatTime(t)
+            formatted_time = "<span class='calc-font'>" + ft.hh + ':' + ft.mm + ':' + ft.ss + '</span>'
           } else {
             formatted_time = "<span class='calc-font'>00:00:00</span>"
           }
@@ -73,6 +62,8 @@ function (ko, Session, toast, http, socket, parseCredits, formatDate) {
         if (err) return http.catchError(err);
         Session.stopSync();
         Session.fetch();
+
+        toast.error('Charging OFF');
       })
       self.can_pause(false)
       self.formatted_time("<span class='calc-font'>00:00:00</span>")
