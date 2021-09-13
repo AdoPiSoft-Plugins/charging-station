@@ -23,7 +23,7 @@ define([
       rootVM.showingBanners(true);
       rootVM.showingSessionsTable(false);
 
-      http.fetchCoinslots(function (err, coinslots) {
+      http.get('/client/coinslots?rate_type=charging', function (err, coinslots) {
         if (err) return http.catchError(err);
         self.coinslots(coinslots);
         self.loading(false);

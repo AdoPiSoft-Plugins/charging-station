@@ -42,15 +42,24 @@
     var viewModel = ko.contextFor(con.parentNode)
     ko.applyBindings(viewModel, btn)
   }
-
-  http.get('/charging-plugin/portal-settings', function (x, resp) {
+  var cache_bust = Math.random().toString().replace('.', '')
+  http.get('/charging-plugin/portal-settings?cache_bust='+cache_bust, function (x, resp) {
     is_default_btn = resp && resp.captive_portal && resp.captive_portal.use_default_button
     onKoPageReady(function (page) {
       if (is_default_btn && page === 'more-buttons') {
         addChargingStationBtn()
       }
+
+      http.get('/client/payments/current?cache_bust='+cache_bust, function (x, resp) {
+        if (resp && resp.source === 'charging_plugin') {
+          require("app/observables/payment").rateType('charging')
+          scope = ko.contextFor(document.querySelector('[data-bind*="$root.currentPage"]'))
+          scope.$root.navigate('charging-insert-coin')
+        }
+      })
     })
   })
+
 
   require(['/public/plugins/charging-station/assets/scripts/ko/main.js'])
 })()

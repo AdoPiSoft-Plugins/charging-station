@@ -123,6 +123,7 @@ class PaymentQue extends EventEmitter {
     if (s) delete s.machine_id
     if (t) delete t.machine_id
     return {
+      source: 'charging_plugin',
       coinslot_id: this.coinslot_id,
       type: this.type,
       total_amount: this.total_amount,

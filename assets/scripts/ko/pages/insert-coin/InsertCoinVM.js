@@ -124,6 +124,7 @@ define([
     sounds.insertCoinBg.play();
     socket().on('payment:received', self.onPaymentReceived);
     socket().on('payment:done', self.done);
+    
   }
   return VM;
 });
