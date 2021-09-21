@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "git@bitbucket.org:adopisowifi/charging-station-plugin.git",
   "author": "Arnel Lenteria <arnel.lenteria@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "python $APPDIR/python-scripts/plugin-postinstall.py $(basename $(pwd)) $(pwd)"
+  }
 }
