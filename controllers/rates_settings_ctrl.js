@@ -20,7 +20,7 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    let id = parseInt(req.params.id)
+    let id = req.params.id
     let rate = await cfg.updateRate(id, req.body)
     res.json(rate)
   } catch (e) {
@@ -30,7 +30,7 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    let id = parseInt(req.params.id)
+    let id = req.params.id
     await cfg.deleteRate(id)
     res.json({success: true})
   } catch (e) {
