@@ -20,7 +20,7 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    let id = req.params.id
+    let id = parseInt(req.params.id)
     let port = await cfg.updatePort(id, req.body)
     res.json(port)
   } catch (e) {
@@ -30,7 +30,7 @@ exports.update = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   try {
-    let id = req.params.id
+    let id = parseInt(req.params.id)
     await cfg.deletePort(id)
     res.json({success: true})
   } catch (e) {

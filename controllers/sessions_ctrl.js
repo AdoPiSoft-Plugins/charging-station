@@ -13,7 +13,7 @@ exports.get = async (req, res, next) => {
 exports.sessionsByPort = async (req, res, next) => {
   try {
     let { device } = req
-    let port_id = req.params.id
+    let port_id = parseInt(req.params.id)
     let list = (await sessions_manager.sessionsByPort(port_id)).map(s => s.toJSON())
     for (let i = 0; i < list.length; i++) {
       let s = list[i]
@@ -52,7 +52,7 @@ exports.start = async (req, res, next) => {
 exports.pausePortSessions = async (req, res, next) => {
   try {
     let { device } = req
-    let port_id = req.params.id
+    let port_id = parseInt(req.params.id)
     let list = await sessions_manager.sessionsByPort(port_id)
     for (let i = 0; i < list.length; i++) {
       let s = list[i]

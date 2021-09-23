@@ -30,7 +30,7 @@ exports.init = async () => {
 
 exports.deviceAvailableSessions = async (device_id) => {
   return exports.list.filter(s => {
-    return s.mobile_device_id === device_id &&
+    return s.mobile_device_id == device_id &&
     !['expired', 'stopped'].includes(s.status) &&
     s.charging_port_id === null &&
     !s.isExpired()
@@ -39,7 +39,7 @@ exports.deviceAvailableSessions = async (device_id) => {
 
 exports.sessionsByPort = async (port_id) => {
   return exports.list.filter(s => {
-    return s.charging_port_id === port_id &&
+    return s.charging_port_id == port_id &&
     !['expired', 'stopped'].includes(s.status) &&
     !s.isExpired()
   })
@@ -54,7 +54,7 @@ exports.startSession = async (session_id) => {
   session.on('stop', async () => {
     try {
       let [s] = await exports.sessionsByPort(charging_port_id)
-      if (s && s.mobile_device_id === session.mobile_device_id) {
+      if (s && s.mobile_device_id == session.mobile_device_id) {
         await exports.startSession(s.id) // auto-continue
       }
     } catch (e) { console.log(e) }
@@ -70,7 +70,7 @@ exports.startSession = async (session_id) => {
     exports.list.push(session)
   }
 
-  let exist = exports.list.find(s => s.status === 'running' && s.charging_port_id === charging_port_id)
+  let exist = exports.list.find(s => s.status === 'running' && s.charging_port_id == charging_port_id)
   if (exist) {
     if (session.mobile_device_id !== exist.mobile_device_id) {
       await session.clearPort()
@@ -102,7 +102,7 @@ exports.stopSession = async (session_id) => {
 }
 
 exports.isSessionLoaded = async (session_id) => {
-  const session = exports.list.find(s => s.db_instance.id === session_id)
+  const session = exports.list.find(s => s.db_instance.id == session_id)
   if (session) return session
   else throw new Error('Session not loaded')
 }
