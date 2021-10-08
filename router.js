@@ -56,10 +56,26 @@ router.post('/charging-plugin/portal-settings',
   portal_settings_ctrl.update
 )
 
-router.post('/charging-plugin/payments/que', ipv4, device_reg, payments_ctrl.quePayment)
-router.post('/charging-plugin/wallet-payment', ipv4, device_reg, current_customer, payments_ctrl.walletPayment)
+router.post('/charging-plugin/payments/que', express.urlencoded({ extended: true }),
+  bodyParser.json(),
+  ipv4, device_reg,
+  payments_ctrl.quePayment
+)
 
-router.get('/charging-plugin/sessions', ipv4, device_reg, sessions_ctrl.get)
-router.post('/charging-plugin/session/:id/start', ipv4, device_reg, sessions_ctrl.start)
+router.post('/charging-plugin/wallet-payment', express.urlencoded({ extended: true }),
+  bodyParser.json(),
+  ipv4, device_reg, current_customer,
+  payments_ctrl.walletPayment
+)
+
+router.get('/charging-plugin/sessions', express.urlencoded({ extended: true }),
+  bodyParser.json(),
+  ipv4, device_reg, sessions_ctrl.get
+)
+
+router.post('/charging-plugin/session/:id/start', express.urlencoded({ extended: true }),
+  bodyParser.json(),
+  ipv4, device_reg, sessions_ctrl.start
+)
 
 module.exports = router

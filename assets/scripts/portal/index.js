@@ -31,12 +31,13 @@
     btn = document.createElement('a')
     btn.classList.add('btn')
     btn.classList.add('btn-lg')
+    btn.classList.add('btn-block')
     btn.classList.add('btn-primary')
     btn.setAttribute('data-bind', "navigate: 'buy-charging'")
     btn.innerHTML = 'Charging Station'
     btn.id = 'charging-station-btn'
     btn.style['padding-left'] = '6px'
-    var con = document.querySelector('.btn-group-padded')
+    var con = document.querySelector('.container .btn-block[data-bind]').parentNode
     if (!con) return
     con.insertBefore(btn, con.children[1])
     var viewModel = ko.contextFor(con.parentNode)
