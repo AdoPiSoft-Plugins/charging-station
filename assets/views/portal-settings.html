@@ -1,0 +1,23 @@
+<form class="form">
+  <div class="form-check">
+    <input class="form-check-input" type="radio" ng-model="captive_portal.use_default_button" ng-value="true" name="use_default_button" ng-change="updatePortalSettings()" id="use_default_button1">
+    <label class="form-check-label" for="use_default_button1">
+      Display default <span class='text-info'>Charging Station</span> button after clicking <span class='text-info'>More</span>
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" ng-model="captive_portal.use_default_button" ng-value="false" name="use_default_button" ng-change="updatePortalSettings()" id="use_default_button2" checked>
+    <label class="form-check-label" for="use_default_button2">
+      Use custom html
+    </label>
+  </div>
+
+  <div ng-show="!captive_portal.use_default_button" class="panel panel-primary">
+    <div class="panel-body">
+      <p><strong>Copy and paste the following html code to <a href='/admin/#!/theme/portal'>Theme / Captive Portal</a> code editor.</strong></p>
+      <p><i>You can customize the following code according to your preference. Just don't touch or alter the attributes <span class="text-primary">id</span> and <span class="text-primary">data-bind</span>.</i></p>
+      <textarea readonly rows="3" style="width:100%"><a class="btn btn-lg btn-block btn-primary" data-bind="navigate: 'buy-charging'" id="charging-station-btn" style="padding-left: 6px;">Charging Station</a></textarea>
+    </div>
+  </div>
+
+</form>

@@ -1,0 +1,63 @@
+<br>
+<div id="insert-coin-page" class="text-center">
+
+  <div class="alert alert-info" data-bind="visible: loading">
+    <p>Please wait...</p>
+  </div>
+
+  <div data-bind="invisible: loading">
+    <h2 class="text-success">Insert Coin Now</h2>
+    <div style="width: 150px; margin: 15px auto;">
+      <img src="images/insert-coin.gif" class="img-full" />
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <h1>Charging Payment</h1>
+          <br/>
+          <div class="list-group">
+
+            <div class="list-group-item">
+              <h3>
+                Amount Inserted:
+                <span class="text-danger">
+                  <span data-bind="text: rates.currency"></span>
+                  <span data-bind="text: que.total_amount().toFixed(2)"></span>
+                </span>
+              </h3>
+            </div>
+            <div class="list-group-item">
+              <h3>
+                Credits:
+                <span class="text-success">
+                  <span data-bind="text: totalCredits"></span>
+                </span>
+              </h3>
+            </div>
+
+            <div class="list-group-item">
+              <!-- ko if: hasPayment -->
+              <a class="btn btn-lg btn-primary" data-bind="click: donePayment, loadingBtn: loading">I'm Done Paying</a>
+              <!-- /ko -->
+
+              <!-- ko ifnot: hasPayment -->
+              <a class="btn btn-lg btn-warning" data-bind="click: donePayment, loadingBtn: loading">Cancel</a>
+              <!-- /ko -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container padd-top">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div data-bind="component: {name: 'progress-bar', params: {current: que.wait_payment_seconds, total: config.wait_payment_seconds}}"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

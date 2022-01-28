@@ -1,0 +1,46 @@
+<div ba-panel ba-panel-title="Charging Station Settings">
+  <div
+    class="padd-top"
+    uib-tabset
+    active="active_tab"
+  >
+    <div
+      uib-tab
+      index="0"
+      heading="Charging Ports"
+    >
+      <div class="padd-top">
+        <div
+          class="ports"
+          ng-include="'/public/plugins/charging-station/views/ports.html'"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      uib-tab
+      index="1"
+      heading="Charging Rates"
+    >
+      <div class="padd-top">
+        <div
+          class="rates"
+          ng-include="'/public/plugins/charging-station/views/rates.html'"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      uib-tab
+      index="2"
+      heading="Captive Portal"
+    >
+      <div class="padd-top">
+        <div
+          class="portal-settings"
+          ng-include="'/public/plugins/charging-station/views/portal-settings.html'"
+        ></div>
+      </div>
+    </div
+  </div>
+</div>
