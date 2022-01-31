@@ -1,6 +1,5 @@
 const path = require('path')
-const ini_file = 'plugin.ini'
-const cfg_path = path.join(__dirname, '/../config', ini_file)
+const ini_file = 'charging-station.ini'
 const fs = require('fs')
 const ini_parser = require('@adopisoft/core/utils/ini-parser.js')
 const ini = require('ini')
@@ -17,8 +16,7 @@ exports.arrayToObj = list => {
 }
 
 exports.read = async () => {
-  let root_dir = path.join(__dirname, '/..')
-  let cfg = await ini_parser(ini_file, { root_dir })
+  let cfg = await ini_parser(ini_file)
   cfg.ports = Object.keys(cfg.ports).map(id => {
     const port = cfg.ports[id]
     port.id = parseInt(port.id)
@@ -32,7 +30,6 @@ exports.read = async () => {
     rate.exp_minutes = parseInt(rate.exp_minutes)
     return rate
   })
-  console.log({cfg})
   return cfg
 }
 
@@ -40,7 +37,8 @@ exports.save = async (cfg) => {
   if (!cfg) return
   cfg.ports = exports.arrayToObj(cfg.ports)
   cfg.rates = exports.arrayToObj(cfg.rates)
-  await fs.promises.writeFile(cfg_path, ini.stringify(cfg))
+  const ini_file_path = path.join(process.env.APPDIR, 'config', ini_file)
+  await fs.promises.writeFile(ini_file_path, ini.stringify(cfg))
 }
 
 // === PORTS SETTINGS =====
