@@ -3,7 +3,7 @@
     font-family: 'Pocket Calculator Regular';
     font-style: normal;
     font-weight: normal;
-    src: local('Pocket Calculator Regular'), url('/public/plugins/charging-station/assets/fonts/POCKC___.woff') format('woff');
+    src: local('Pocket Calculator Regular'), url('/plugins/charging-station/assets/fonts/POCKC___.woff') format('woff');
   }
   .calc-font{
     font-family:'Pocket Calculator Regular';
@@ -21,11 +21,11 @@
         <hr>
         <h3 data-bind="text: alias" class="text-success"></h3>
         <!-- ko if: running -->
-        <img src="/public/plugins/charging-station/assets/images/charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
+        <img src="/plugins/charging-station/assets/images/charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
         <!-- /ko -->
 
         <!-- ko if: !running() -->
-        <img src="/public/plugins/charging-station/assets/images/not-charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
+        <img src="/plugins/charging-station/assets/images/not-charging-icon.png" style="padding: 12px 0px;width: 100px;"/>
         <!-- /ko -->
 
         <h2 data-bind="html: formatted_time()"></h2>
@@ -80,7 +80,7 @@
                   Start
                 </a>
                 <!-- /ko -->
-
+                
                 <!-- ko if: $parent.selected_session() && $parent.selected_session().id == id -->
                 <a class="btn btn-sm btn-default" data-bind="click: function(d, e){ $parent.cancelStartSession(id) }">
                   Cancel

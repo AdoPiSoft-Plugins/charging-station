@@ -10,11 +10,11 @@ value_path = gpio_path + "/gpio" + str(pinNum) + "/value"
 direction_path = gpio_path + "/gpio" + str(pinNum) + "/direction"
 
 try:
-    export_file = open(export_path, "w")
-    export_file.write(str(pinNum))
-    export_file.close()
+  export_file = open(export_path, "w")
+  export_file.write(str(pinNum))
+  export_file.close()
 except:
-    pass
+  pass
 
 direction_file = open(direction_path, "w")
 direction_file.write("out")
